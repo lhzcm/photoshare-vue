@@ -1,8 +1,8 @@
 <template>
  <div class="main">
   <div id="app">
-      <title-component titlename="主页"></title-component>
-      <router-link to="/">Home</router-link> |
+      <title-component titlename="主页" link="/about"></title-component>
+      <router-link to="/home">Home</router-link> |
       <router-link to="/about">About</router-link>
       <router-view/>
     </div>
