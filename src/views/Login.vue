@@ -7,7 +7,7 @@
             </div>
             <div>
                 <span class="iconfont icon-suo"></span>
-                <input type="text"/>
+                <input type="password"/>
             </div>
             <div>
                 <button>注册</button>
@@ -44,6 +44,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border-radius: 2rem;
 }
 .panel div{
     display: flex;
@@ -59,10 +60,13 @@ export default {
     width: 16rem;
     height: 2rem;
     border: 1px grey solid;
+    font-size: 1rem;
     border-radius: .5rem;
+    outline: none;
 }
 .panel div input:first-of-type{
         margin-bottom: 2rem;
+       
 }
 
 .panel div button{
@@ -74,5 +78,24 @@ export default {
     color: white;
     margin: 0 1rem;
     font-size: 1rem;
+    outline: none;
+}
+
+.panel div button:first-of-type{
+     background-color: burlywood;
+}
+
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+color: #666;font-size:2rem;
+}
+input:-moz-placeholder, textarea:-moz-placeholder {
+color:#666;font-size:2rem;
+}
+input::-moz-placeholder, textarea::-moz-placeholder {
+color:#666;font-size:2rem;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+color:#666;font-size:2rem;
 }
 </style>
