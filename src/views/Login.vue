@@ -3,23 +3,42 @@
         <div class="panel">
             <div>
                 <span class="iconfont icon-yonghu"></span>
-                <input type="text"/>
+                <input v-model="account" type="text"/>
             </div>
             <div>
                 <span class="iconfont icon-suo"></span>
-                <input type="password"/>
+                <input v-model="password" type="password"/>
             </div>
             <div>
                 <button>注册</button>
-                <button>登录</button>
+                <button @click="login">登录</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import request from '../utility/request.js'
 export default {
-    
+    data:function(){
+        return{
+            account: "",
+            password:""
+        }
+    },
+    methods:{
+        login: function(){
+            console.log(this.account, this.password)
+            request.post("user/login",{
+                "Id" : parseInt(this.account),
+                "Password" : this.password
+            },
+            function(data){
+                console.log(data)
+            }
+            )
+        }
+    }
 }
 </script>
 
@@ -29,8 +48,6 @@ export default {
 <style scoped>
 
 .content{
-    width:100%;
-    height: 100%;
     display:flex;
     flex-direction: row;
     justify-content: center;

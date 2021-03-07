@@ -22,6 +22,17 @@ const routes = [
     path: '/login',
     name: '登录',
     component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/friends',
+    name: '好友列表',
+    component: ()=> import('../views/Friends.vue')
+  },
+  {
+    path: '/chat/:id',
+    name: '聊天',
+    component: ()=> import('../views/Chat.vue'),
+    props: (route) => {return { id: parseInt(route.params.id) }}
   }
 ]
 

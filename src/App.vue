@@ -2,24 +2,34 @@
  <div class="main">
   <div id="app">
       <title-component titlename="主页" link="/about"></title-component>
-      <router-link to="/home">Home</router-link> |
-      <router-link to="/about">About</router-link>
-      <router-view/>
+      <!-- <router-link to="/home">Home</router-link> |
+      <router-link to="/about">About</router-link> -->
+      <router-view class="view"/>
+      <tab-bar></tab-bar>
     </div>
   </div>
 </template>
 
 <script>
 import TitleComponent from './components/Title.vue'
+import TabBar from './components/TabBar.vue'
 import autoSize from './utility/autosize.js'
+import socket from './utility/socket.js'
 
 export default {
   name: 'App',
   components: {
-    TitleComponent
+    TitleComponent,
+    TabBar
   },
   created:function(){
     autoSize('app', 800);
+
+    //连接webSocket
+    setTimeout(function(){
+      socket.openConnection()
+    },0)
+    
   }
 }
 </script>
@@ -54,7 +64,11 @@ body {
   height: 100%;
   overflow-y: scroll;
 }
-
+.view{
+  height: calc(100% - 88px);
+  width: 100%;
+  overflow-y: scroll;
+}
 ::-webkit-scrollbar {/*隐藏滚轮*/
 display: none;
 }
