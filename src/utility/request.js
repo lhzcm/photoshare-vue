@@ -29,6 +29,16 @@ const request = {
         var result = await axios.get(host + url,{
             params: param
         })
+        if(!result.data){
+            return null
+        }
+        if(result.data.Code == -11){
+            return null
+        }
+        if(result.data.Code == -1){
+            alert(result.data.Msg)
+            return null
+        }
         return result.data.Data
     },
     post: function(url, param, callback){
@@ -49,5 +59,7 @@ const request = {
         })
     }
 }
+
+
 
 export default request

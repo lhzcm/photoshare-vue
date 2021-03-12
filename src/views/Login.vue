@@ -19,6 +19,8 @@
 
 <script>
 import request from '../utility/request.js'
+import user from '../utility/user.js'
+
 export default {
     data:function(){
         return{
@@ -28,15 +30,16 @@ export default {
     },
     methods:{
         login: function(){
-            console.log(this.account, this.password)
+            var that = this
             request.post("user/login",{
                 "Id" : parseInt(this.account),
                 "Password" : this.password
             },
             function(data){
-                console.log(data)
-            }
-            )
+                user.userInfo = data
+                console.log(user)
+                that.$router.push("/friends")
+            })
         }
     }
 }

@@ -1,7 +1,7 @@
 <template>
  <div class="main">
   <div id="app">
-      <title-component titlename="主页" link="/about"></title-component>
+      <title-component titlename="主页"></title-component>
       <!-- <router-link to="/home">Home</router-link> |
       <router-link to="/about">About</router-link> -->
       <router-view class="view"/>
@@ -15,6 +15,7 @@ import TitleComponent from './components/Title.vue'
 import TabBar from './components/TabBar.vue'
 import autoSize from './utility/autosize.js'
 import socket from './utility/socket.js'
+import user from './utility/user.js'
 
 export default {
   name: 'App',
@@ -26,10 +27,14 @@ export default {
     autoSize('app', 800);
 
     //连接webSocket
-    setTimeout(function(){
-      socket.openConnection()
-    },0)
-    
+    if(user.getUserInfo())
+    {
+      setTimeout(function(){
+        socket.openConnection()
+      },0)
+    }else{
+      this.$router.push('/login')
+    }
   }
 }
 </script>

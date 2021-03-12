@@ -8,6 +8,7 @@ const user = {
         }
         //获取用户信息
         this.userInfo = await request.getSync("user/info","")
+        console.log(this.userInfo)
         return this.userInfo
     }
 }

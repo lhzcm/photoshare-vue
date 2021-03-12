@@ -1,6 +1,8 @@
 const url = "ws://127.0.0.1:9090/message/ws"
 
 const socket = {
+    //判断是否有连接
+    hasConnection : false,
     //连接对象
     connection : null,
     //消息缓存
@@ -11,17 +13,30 @@ const socket = {
     //消息接收事件
     onReceiveMessageAfter : function() {
     },
+    connect: function() {
+        if(this.hasConnection){
+            return
+        }
+        this.openConnection()
+    },
     //打开websocket连接
     openConnection: function () {
+        var that = this
+
+        that.hasConnection = true
         if (window["WebSocket"]) {
             this.connection = new WebSocket(url);
             this.connection.onclose = function (evt) {
                 alert("与服务器连接中断")
-                setTimeout(socket.connection, 20000)
+                setTimeout(function(){socket.openConnection()}, 5000)
                 console.log(evt)
             }
 
-            var that = this
+            this.connection.onopen = function(e){
+                console.log("websocket 连接成功")
+                console.log(e)
+            }
+            
             this.connection.onmessage = function (evt) {
                 var messages = evt.data.split('\n');
                 for (var i = 0; i < messages.length; i++) {
@@ -44,6 +59,7 @@ const socket = {
                    }
                 }
             }
+
         } else {
             alert("你的浏览器不支持聊天室功能")
         }
