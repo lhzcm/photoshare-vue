@@ -6,7 +6,7 @@ var host= " http://127.0.0.1:9090/"
 axios.defaults.withCredentials = true
 const request = {
     axios,
-    get: function(url, param, callback){
+    get: function(url, param, callback, failCallback = null){
         axios.get(host + url,{
             params: param
         }).then(function(res){
@@ -16,12 +16,18 @@ const request = {
                 return
             }
             if(res.data.Code == -1){
+                if(failCallback){
+                    failCallback()
+                }
                 alert(res.data.Msg)
             }
             if(callback){
                 callback(res.data.Data)
             }
         }).catch(function(ex){
+            if(failCallback){
+                failCallback()
+            }
             console.log(ex)
         })
     },

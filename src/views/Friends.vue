@@ -3,7 +3,10 @@
     <div v-for="item in friends" :key="item.Id">
       <router-link :to="'/chat/' + item.Id">
       <div class="friend">
-        <img :src="item.Headimg" />
+        <div :style="{backgroundImage:'url(' + item.Headimg + ')'}">
+          <span>6</span>
+          <!-- <img :src="item.Headimg" /> -->
+        </div>
         <div>{{ item.Name }}</div>
       </div>
       </router-link>
@@ -40,6 +43,10 @@ export default {
 </script>
 
 <style scoped>
+a{
+    text-decoration: none;
+    color: black;
+}
 .friend{
     display:flex;
     flex-direction: row;
@@ -49,11 +56,20 @@ export default {
     margin-bottom: 1px;
     font-size: 16px;
 }
-.friend img{
+.friend div:first-of-type {
     width: 60px;
     height: 60px;
+    margin: 0 20px 0 5px;
+    background-size: 60px 60px;
     border-radius: 5px;
-    margin-right: 20px;
-    margin-left: 10px;
+}
+.friend div span{
+    background-color: red;
+    color: white;
+    padding: 1px 4px;
+    border-radius: 7px;
+    font-size: 1px;
+    position: relative;
+    left: 28px;
 }
 </style>
