@@ -1,23 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/home',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
   {
     path: '/login',
     name: '登录',
@@ -33,6 +19,26 @@ const routes = [
     name: '聊天',
     component: ()=> import('../views/Chat.vue'),
     props: (route) => {return { id: parseInt(route.params.id) }}
+  },
+  {
+    path: '/earth',
+    name: '星球',
+    component: ()=> import('../views/Earth.vue')
+  },
+  {
+    path: '/dynamic',
+    name: '动态',
+    component: ()=> import('../views/Dynamic.vue')
+  },
+  {
+    path: '/publish',
+    name: '发布',
+    component: ()=> import('../views/Publish.vue')
+  },
+  {
+    path: '/mine',
+    name: '我的',
+    component: ()=> import('../views/Mine.vue')
   }
 ]
 

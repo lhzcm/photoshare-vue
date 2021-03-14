@@ -4,7 +4,7 @@
       <router-link :to="'/chat/' + item.Id">
       <div class="friend">
         <div :style="{backgroundImage:'url(' + item.Headimg + ')'}">
-          <span>6</span>
+          <span v-if="item.Notreadnums > 0">{{item.Notreadnums}}</span>
           <!-- <img :src="item.Headimg" /> -->
         </div>
         <div>{{ item.Name }}</div>
@@ -16,6 +16,7 @@
 
 <script>
 import request from "../utility/request.js"
+import socket from "../utility/socket.js"
 
 export default {
   data: function () {
@@ -27,6 +28,7 @@ export default {
   },
   created: function(){
       var that = this
+      //获取好友列表
       request.get('friend', "", function(data){
           console.log(data)
           data.forEach(function(item){
@@ -34,10 +36,24 @@ export default {
                   Id: item.Id, 
                   Name: item.Name,
                   Headimg: item.Headimg,
+                  Notreadnums: item.Notreadnums
                   })
           })
-           console.log(that.friends)
+          that.friends.sort((a,b)=> b.Notreadnums - a.Notreadnums)
+          console.log(that.friends)
       })
+      //监听消息接收
+      socket.onReceiveMessageAfter = function(msg){
+        for( var i = 0; i < that.friends.length; i++){
+          if(that.friends[i].Id == msg.Senderid){
+            that.friends[i].Notreadnums++;
+            // var temp = that.friends[0]
+            // that.friends[0] =  that.friends[i]
+            // that.friends[i] = temp
+          }
+          that.friends.sort((a,b)=> b.Notreadnums - a.Notreadnums)
+        }
+      }
   }
 };
 </script>
@@ -68,7 +84,7 @@ a{
     color: white;
     padding: 1px 4px;
     border-radius: 7px;
-    font-size: 1px;
+    font-size: 12px;
     position: relative;
     left: 28px;
 }

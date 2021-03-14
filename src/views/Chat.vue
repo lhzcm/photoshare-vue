@@ -63,16 +63,9 @@ export default {
     methods:{
         //发送消息
         send: function(){
-            socket.sendMessage(this._props.id, this.msg)
-        },
-        //加载消息
-        reloadMsg: function(data){
-            for(this.curindex; this.curindex < data.length; this.curindex++){
-                if(data[this.curindex].Senderid == this._props.id || data[this.curindex].Receiverid == this._props.id  ){
-                    this.msgs.push(data[this.curindex])
-                }
+            if(socket.sendMessage(this._props.id, this.msg)){
+                this.msg = ""
             }
-            this.isScroll = true 
         },
         //获取消息列表
         getMsgList: function(){
@@ -94,9 +87,18 @@ export default {
     },
     created: async function(){
         var that = this
-        socket.onReceiveMessageAfter = function(data){that.reloadMsg(data)}
+        //监听消息接收
+        socket.onReceiveMessageAfter = function(data){
+             that.msgs.push(data)
+             that.isScroll = true 
+             if(data.Senderid == that._props.id){
+                socket.clearNotreadnums(data.Senderid)
+             }
+        }
         //this.reloadMsg(socket.messagesCache)
+        //获取消息列表
         this.getMsgList()
+        //获取用户信息
         this.userInfo = await user.getUserInfo()
         //console.log(this.userInfo)
     },

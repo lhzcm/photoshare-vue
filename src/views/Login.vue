@@ -20,6 +20,7 @@
 <script>
 import request from '../utility/request.js'
 import user from '../utility/user.js'
+import socket from '../utility/socket.js'
 
 export default {
     data:function(){
@@ -31,13 +32,14 @@ export default {
     methods:{
         login: function(){
             var that = this
-            request.post("user/login",{
+            request.post("/login",{
                 "Id" : parseInt(this.account),
                 "Password" : this.password
             },
             function(data){
                 user.userInfo = data
                 console.log(user)
+                socket.connect()
                 that.$router.push("/friends")
             })
         }
