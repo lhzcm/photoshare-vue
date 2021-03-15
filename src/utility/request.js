@@ -1,12 +1,12 @@
 import axios from "axios"
 import router from "../router/index.js"
 
-//var host= " http://www.onlinemusic.top:8080/"
-var host= " http://127.0.0.1:9090/"
+var host= " http://www.onlinemusic.top:9090/"
+//var host= " http://127.0.0.1:9090/"
 axios.defaults.withCredentials = true
 const request = {
     axios,
-    get: function(url, param, callback){
+    get: function(url, param, callback, failCallback = null){
         axios.get(host + url,{
             params: param
         }).then(function(res){
@@ -16,12 +16,18 @@ const request = {
                 return
             }
             if(res.data.Code == -1){
+                if(failCallback){
+                    failCallback()
+                }
                 alert(res.data.Msg)
             }
             if(callback){
                 callback(res.data.Data)
             }
         }).catch(function(ex){
+            if(failCallback){
+                failCallback()
+            }
             console.log(ex)
         })
     },
@@ -50,6 +56,7 @@ const request = {
             }
             if(res.data.Code == -1){
                 alert(res.data.Msg)
+                return
             }
             if(callback){
                 callback(res.data.Data)

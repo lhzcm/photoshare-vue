@@ -23,15 +23,13 @@ export default {
     TitleComponent,
     TabBar
   },
-  created:function(){
+  created: async function(){
     autoSize('app', 800);
 
     //连接webSocket
-    if(user.getUserInfo())
-    {
-      setTimeout(function(){
-        socket.openConnection()
-      },0)
+    var userinfo = await user.getUserInfo()
+    if(userinfo){
+        socket.connect()
     }else{
       this.$router.push('/login')
     }

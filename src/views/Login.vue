@@ -20,7 +20,8 @@
 <script>
 import request from '../utility/request.js'
 import user from '../utility/user.js'
-import md5 from '../utility/md5.js'
+import socket from '../utility/socket.js'
+import common from '../utility/common.js'
 
 export default {
     data:function(){
@@ -32,16 +33,28 @@ export default {
     methods:{
         login: function(){
             var that = this
-            request.post("user/login",{
-                "Id" : parseInt(this.account),
-                "Password" : this.password
+            var password = that.password.trim()
+            var account = that.account.trim()
+
+            if (password == ""){
+                alert("密码不能为空")
+            }
+            if(account == ""){
+                alert("账号不能为空")
+            }
+            password = common.md5Convert(password)
+
+            request.post("/login",{
+                "Id" : account,
+                "Password" : password
             },
             function(data){
                 user.userInfo = data
                 console.log(user)
+                socket.connect()
                 that.$router.push("/friends")
             })
-            console.log(md5)
+
         }
     }
 }

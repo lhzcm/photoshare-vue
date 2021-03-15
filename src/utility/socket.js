@@ -1,4 +1,5 @@
-const url = "ws://127.0.0.1:9090/message/ws"
+var url= " http://www.onlinemusic.top:9090/message/ws"
+//var url = "ws://127.0.0.1:9090/message/ws"
 
 const socket = {
     //判断是否有连接
@@ -7,9 +8,6 @@ const socket = {
     connection : null,
     //消息缓存
     messagesCache:[],
-    //消息接收事件
-    onReceiveMessage : function() {
-    },
     //消息接收事件
     onReceiveMessageAfter : function() {
     },
@@ -48,8 +46,9 @@ const socket = {
                     if(msgObj.Code == 1){
                         console.log(messages[i], msgObj)
                         that.messagesCache.push(msgObj.Data)
-                        that.onReceiveMessage(that.messagesCache)
-                        that.onReceiveMessageAfter(that.messagesCache)
+                        if(that.onReceiveMessageAfter){
+                            that.onReceiveMessageAfter(msgObj.Data)
+                        }
                     }
                    
                    }catch(err){
@@ -83,9 +82,17 @@ const socket = {
             }
         }
         this.connection.send(JSON.stringify(message))
-        this.messagesCache.push(message.Data)
-        this.onReceiveMessageAfter(this.messagesCache)
         return true;
+    },
+    //清除未读消息
+    clearNotreadnums:function(friendid){
+        var message = {
+            Code : 3,
+            Data : friendid
+        }
+        if(this.connection){
+            this.connection.send(JSON.stringify(message))
+        }
     }
 }
 

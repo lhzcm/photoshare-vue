@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="msgcontent" ref="content">
-            <div v-for="(item, index) in msgs" :key="index" :class="item.Senderid ? 'friendmsg' : 'friendmsg transform'">
+        <div class="msgcontent" ref="content"  @scroll="onScroll">
+            <div v-for="item in msgs" :key="item.Id" :class="item.Senderid == id ? 'friendmsg' : 'friendmsg transform'">
                 <!-- <img :src="img"/> -->
                 <img :src="userInfo.Headimg" />
                 <div><p>{{item.Content}}</p></div>
@@ -21,6 +21,8 @@
 <script>
 import socket from '../utility/socket.js'
 import user from '../utility/user.js'
+import request from '../utility/request.js'
+
 export default {
     props:{
         id: Number,
@@ -32,35 +34,73 @@ export default {
             msg : "",
             msgs:[],
             curindex: 0,
-            isScroll: false,
-            userInfo:{}
+            
+            isScroll: true,         //是否需要滚动到最底部
+
+            userInfo: {},           //用户信息
+            curid : 1000000000,     //当前最小的聊天id
+
+            isLoading : false,      //是否真正加载聊天记录
+
+            lastScrollTop: 0,       //记录上次滚动位置
+            lastScrollHeight: 0,    ////记录上次滚动高度
         }
     },
+    beforeUpdate:function(){
+        console.log(this.$refs.content.scrollHeight)
+        this.lastScrollTop = this.$refs.content.scrollTop
+        this.lastScrollHeight = this.$refs.content.scrollHeight
+    },
     updated:function(){
+        console.log(this.$refs.content.scrollHeight)
         if(this.isScroll){
             this.$refs.content.scrollTop = this.$refs.content.scrollHeight
             this.isScroll = false
+        }else{
+            this.$refs.content.scrollTop = this.$refs.content.scrollHeight - this.lastScrollHeight  + this.lastScrollTop
         }
     },
     methods:{
+        //发送消息
         send: function(){
-            socket.sendMessage(this._props.id, this.msg)
-        },
-        reloadMsg: function(data){
-            for(this.curindex; this.curindex < data.length; this.curindex++){
-                if(data[this.curindex].Senderid == this._props.id || data[this.curindex].Receiverid == this._props.id  ){
-                    this.msgs.push(data[this.curindex])
-                }
+            if(socket.sendMessage(this._props.id, this.msg)){
+                this.msg = ""
             }
-            this.isScroll = true 
+        },
+        //获取消息列表
+        getMsgList: function(){
+            var that = this
+            request.get("messages/" + this._props.id + "/" + this.curid, "", function(data){
+                that.msgs = data.reverse().concat(that.msgs)
+                if(that.msgs[0]) {
+                    that.curid = that.msgs[0].Id
+                }
+                that.isLoading = false;
+            },function(){that.isLoading = false})
+        },
+        onScroll: function(){
+            if(this.$refs.content.scrollTop <= 20 && !this.isLoading) {
+                this.isLoading = true;
+                this.getMsgList()
+            } 
         }
     },
     created: async function(){
         var that = this
-        socket.onReceiveMessageAfter = function(data){that.reloadMsg(data)}
-        this.reloadMsg(socket.messagesCache)
+        //监听消息接收
+        socket.onReceiveMessageAfter = function(data){
+             that.msgs.push(data)
+             that.isScroll = true 
+             if(data.Senderid == that._props.id){
+                socket.clearNotreadnums(data.Senderid)
+             }
+        }
+        //this.reloadMsg(socket.messagesCache)
+        //获取消息列表
+        this.getMsgList()
+        //获取用户信息
         this.userInfo = await user.getUserInfo()
-        console.log(this.userInfo)
+        //console.log(this.userInfo)
     },
     mounted:function(){
         this.$refs.content.scrollTop = this.$refs.content.scrollHeight

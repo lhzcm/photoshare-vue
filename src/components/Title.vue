@@ -19,10 +19,8 @@ export default {
   },
   created : function(){
       this.$router.afterEach((to) => {
-          console.log(this.$router.getRoutes())
           this.$router.getRoutes().forEach(element => {
-          if (element.path == to.path){
-              console.log( element.name)
+          if (element.path == to.matched[0].path){
               this.titlename = element.name
           }
       });
@@ -49,7 +47,7 @@ export default {
 .title {
   width: 100%;
   height: 44px;
-  background: tomato;
+  background: red;
   text-align: left;
 }
 .title span {
