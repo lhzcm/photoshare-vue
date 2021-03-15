@@ -20,6 +20,7 @@
 <script>
 import request from '../utility/request.js'
 import user from '../utility/user.js'
+import md5 from '../utility/md5.js'
 
 export default {
     data:function(){
@@ -40,6 +41,7 @@ export default {
                 console.log(user)
                 that.$router.push("/friends")
             })
+            console.log(md5)
         }
     }
 }
