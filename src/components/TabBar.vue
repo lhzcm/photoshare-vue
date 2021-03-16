@@ -1,5 +1,5 @@
 <template>
-    <div class="tabbar">
+    <div v-if="isShow" class="tabbar">
         <!-- <div><span class="iconfont icon-earth-full"></span></div>
         <div><span class="iconfont icon-dongtai"></span></div>
         <div><span class="iconfont icon-fabu"></span></div>
@@ -47,7 +47,8 @@ export default {
                 path: "/mine",
                 paths: ["/mine"],
                 active: false
-            }]
+            }],
+            isShow: true
         }
     },
     watch:{
@@ -65,6 +66,13 @@ export default {
                     item.active = false;
                 }
             })
+
+            if(this.$route.matched[0].path == '/login' || this.$route.matched[0].path == '/register'){
+                this.isShow = false
+            }else{
+                this.isShow = true
+            }
+
         }
     }
 }

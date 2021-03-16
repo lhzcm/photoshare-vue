@@ -70,7 +70,7 @@ export default {
         //获取消息列表
         getMsgList: function(){
             var that = this
-            request.get("messages/" + this._props.id + "/" + this.curid, "", function(data){
+            request.get("/messages/" + this._props.id + "/" + this.curid, "", function(data){
                 that.msgs = data.reverse().concat(that.msgs)
                 if(that.msgs[0]) {
                     that.curid = that.msgs[0].Id

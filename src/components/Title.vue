@@ -33,7 +33,7 @@ export default {
         console.log(this._props.link);
         this.$router.push({ path: this._props.link });
       } else {
-        window.history.back();
+        this.$router.go(-1)
       }
     },
   },

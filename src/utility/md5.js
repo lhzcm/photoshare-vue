@@ -19,8 +19,8 @@
 
 /* global define */
 
-//var md5 = {};
-export default (function ($) {
+var md5 = {};
+(function ($) {
   'use strict'
 
   /*
@@ -278,6 +278,6 @@ export default (function ($) {
   } else {
     $.md5 = md5
   }
-})(this)
+})(md5)
 
-//export default md5
+export default md5

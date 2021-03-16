@@ -39,6 +39,11 @@ const routes = [
     path: '/mine',
     name: '我的',
     component: ()=> import('../views/Mine.vue')
+  },
+  {
+    path: '/register',
+    name: '账号注册',
+    component:()=> import('../views/Register.vue')
   }
 ]
 

@@ -29,7 +29,7 @@ export default {
   created: function(){
       var that = this
       //获取好友列表
-      request.get('friend', "", function(data){
+      request.get('/friend', "", function(data){
           console.log(data)
           data.forEach(function(item){
               that.friends.push({
