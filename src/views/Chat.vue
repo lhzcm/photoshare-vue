@@ -12,7 +12,7 @@
             </div> -->
         </div>
         <div class="control">
-            <input type="text" v-model="msg"/>
+            <input @keydown="send" type="text" v-model="msg"/>
             <button @click="send">发送</button>
         </div>
     </div>
@@ -62,7 +62,11 @@ export default {
     },
     methods:{
         //发送消息
-        send: function(){
+        send: function(e){
+            //判断是否是回车发送
+            if(!e || e.keyCode != 13){
+                return
+            }
             if(socket.sendMessage(this._props.id, this.msg)){
                 this.msg = ""
             }

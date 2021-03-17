@@ -7,14 +7,14 @@
         <div v-if="ispassword" class="panel">
             <div>
                 <span class="iconfont icon-yonghu"></span>
-                <input v-model="account" type="text"/>
+                <input v-model="account" placeholder="请输入账号或手机号" type="text"/>
             </div>
             <div>
                 <span class="iconfont icon-suo"></span>
-                <input v-model="password" type="password"/>
+                <input v-model="password" placeholder="请输入密码" type="password"/>
             </div>
             <div>
-                <button>注册</button>
+                <button @click="register">注册</button>
                 <button @click="login">登录</button>
             </div>
         </div>
@@ -47,11 +47,18 @@ export default {
             interval: null
         }
     },
+    beforeCreate: function(){
+        //用户已经登录不允许返回到登录界面
+        if(user.userInfo){
+            this.$router.push("/friends")
+        }
+    },
     methods:{
         login: function(){
             var that = this
             var password = that.password.trim()
             var account = that.account.trim()
+            var phone = ""
 
             if (password == ""){
                 alert("密码不能为空")
@@ -61,11 +68,18 @@ export default {
                 alert("账号不能为空")
                 return
             }
+            //判断是否手机号登录
+            if(account.length == 11){
+                phone = account;
+                account = "0";
+            }
+
             password = common.md5Convert(password)
 
             request.post("/user/login",{
                 "Id" : parseInt(account),
-                "Password" : that.password.trim()
+                "Phone": phone,
+                "Password" : password
             },
             function(data){
                 user.userInfo = data
@@ -98,6 +112,9 @@ export default {
         },
         tabSwitch: function(obj){
             this.ispassword = obj
+        },
+        register: function(){
+            this.$router.push("/register")
         }
     },
     destroyed: function(){

@@ -9,6 +9,10 @@
                 <span class="iconfont icon-yonghu"></span>
                 <input v-model="phone" placeholder="请输入手机号码" type="text"/>
             </div>
+            <!-- <div>
+                <span class="iconfont icon-yonghu"></span>
+                <input v-model="brithday" placeholder="请输入出生日期" type="date"/>
+            </div> -->
             <div>
                 <span class="iconfont icon-suo"></span>
                 <input v-model="password" placeholder="请输入密码" type="password"/>
@@ -19,7 +23,7 @@
             </div>
             <div>
                 <button @click="getCode">验证</button>
-                <button @click="register" :class="canRegister?'active':''">登录</button>
+                <button @click="register" :class="canRegister?'active':''">注册</button>
             </div>
             <div v-if="code > 0 && !canRegister" class="msg">请用该手机号发送<span>{{"xin#"+code}}</span>到<span>13556000271</span></div>
         </div>
@@ -43,6 +47,13 @@ export default {
             code:0,             //验证码
             interval: null,     //定时请求器
             canRegister: false, //是否可以注册
+            brithday:"",        //出生日期
+        }
+    },
+    beforeCreate: function(){
+        //用户已经登录不允许返回到登录界面
+        if(user.userInfo){
+            this.$router.push("/friends")
         }
     },
     methods:{
@@ -112,7 +123,7 @@ export default {
                     })
                 },2000)
             })
-        },
+        }
     },
     destroyed: function(){
         clearInterval(this.interval)
