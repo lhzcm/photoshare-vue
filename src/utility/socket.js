@@ -1,5 +1,5 @@
-//var url= " ws://www.onlinemusic.top:9090/message/ws"
-var url = "ws://127.0.0.1:9090/message/ws"
+var url= " ws://www.onlinemusic.top:9090/message/ws"
+//var url = "ws://127.0.0.1:9090/message/ws"
 
 const socket = {
     //判断是否有连接
@@ -49,9 +49,7 @@ const socket = {
                         if(that.onReceiveMessageAfter){
                             that.onReceiveMessageAfter(msgObj.Data)
                         }
-                    }
-                   
-                   }catch(err){
+                    }}catch(err){
                        alert("获取消息出错")
                        console.log(err)
                        continue;
