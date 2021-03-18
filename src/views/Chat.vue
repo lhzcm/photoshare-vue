@@ -6,14 +6,17 @@
                 <img :src="userInfo.Headimg" />
                 <div><p>{{item.Content}}</p></div>
             </div>
-            <!-- <div class="friendmsg transform">
-                <img src='https://pic1.zhimg.com/80/v2-de613dda71d9f958c4a71d57fd59d370_720w.jpg?source=1940ef5c'/>
-                <div><p>sfsdflsjdflkjsdksdlfjkssfsdfl</p></div>
-            </div> -->
         </div>
         <div class="control">
             <input @keydown="send" type="text" v-model="msg"/>
             <button @click="send">发送</button>
+        </div>
+        <div class="emoji">
+            <div v-for="(item, index) in emojis" :key="index">
+                <div v-for="(item2, index2) in item" @click="inputEmoji(item2.emoji)" :key="index2">
+                    {{item2.emoji}}
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -22,6 +25,8 @@
 import socket from '../utility/socket.js'
 import user from '../utility/user.js'
 import request from '../utility/request.js'
+import emoji from '../utility/emoji.js'
+import common from '../utility/common.js'
 
 export default {
     props:{
@@ -44,6 +49,7 @@ export default {
 
             lastScrollTop: 0,       //记录上次滚动位置
             lastScrollHeight: 0,    ////记录上次滚动高度
+            emojis: common.arrayChunk(emoji.emojis, 9)  //表情列表
         }
     },
     beforeUpdate:function(){
@@ -64,7 +70,7 @@ export default {
         //发送消息
         send: function(e){
             //判断是否是回车发送
-            if(!e || e.keyCode != 13){
+            if(e && e.keyCode != 13){
                 return
             }
             if(socket.sendMessage(this._props.id, this.msg)){
@@ -87,9 +93,14 @@ export default {
                 this.isLoading = true;
                 this.getMsgList()
             } 
+        },
+        //输入表情
+        inputEmoji: function(emoji){
+            this.msg = this.msg + emoji
         }
     },
     created: async function(){
+        console.log(this.emojis)
         var that = this
         //监听消息接收
         socket.onReceiveMessageAfter = function(data){
@@ -114,7 +125,7 @@ export default {
 
 <style scoped>
 .msgcontent{
-    height: calc(100% - 58px);
+    height: calc(100% - 58px - 14rem);
     width: 100%;
     padding-top:10px;
     overflow-y:scroll;
@@ -164,6 +175,16 @@ export default {
     word-break: break-word;
     padding: 0 10px;
     color: white;
+}
+.emoji{
+    height: 14rem;
+    overflow: hidden;
+}
+.emoji div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 2rem;
 }
 
 .transform {
