@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="msgcontent" ref="content"  @scroll="onScroll">
+        <div :class="isInputWord ? 'msgcontent' : 'msgcontent msgcontentInputEmoji'" ref="content"  @scroll="onScroll">
             <div v-for="item in msgs" :key="item.Id" :class="item.Senderid == id ? 'friendmsg' : 'friendmsg transform'">
                 <!-- <img :src="img"/> -->
                 <img :src="userInfo.Headimg" />
@@ -8,11 +8,12 @@
             </div>
         </div>
         <div class="control">
-            <input @keydown="send" type="text" v-model="msg"/>
             <upload-file></upload-file>
+            <input @keydown="send" type="text" v-model="msg" @focus="wordInput" ref="msgInput" />
+            <span :class="isInputWord ? 'iconfont icon-biaoqing' : 'iconfont icon-jianpanTalk-keyboard'" @click="switchInput"></span>
             <button @click="send">发送</button>
         </div>
-        <div class="emoji">
+        <div v-if="!isInputWord" class="emoji">
             <div v-for="(item, index) in emojis" :key="index">
                 <div v-for="(item2, index2) in item" @click="inputEmoji(item2.emoji)" :key="index2">
                     {{item2.emoji}}
@@ -54,7 +55,8 @@ export default {
 
             lastScrollTop: 0,       //记录上次滚动位置
             lastScrollHeight: 0,    ////记录上次滚动高度
-            emojis: common.arrayChunk(emoji.emojis, 9)  //表情列表
+            emojis: common.arrayChunk(emoji.emojis, 9),  //表情列表
+            isInputWord: true,      //是否文字输入
         }
     },
     beforeUpdate:function(){
@@ -75,7 +77,7 @@ export default {
         //发送消息
         send: function(e){
             //判断是否是回车发送
-            if(e && e.keyCode != 13){
+            if(e.type == 'keydown' && e.keyCode != 13){
                 return
             }
             if(socket.sendMessage(this._props.id, this.msg)){
@@ -102,6 +104,16 @@ export default {
         //输入表情
         inputEmoji: function(emoji){
             this.msg = this.msg + emoji
+        },
+        //输入文字
+        wordInput: function(){
+            this.isInputWord = true
+        },
+        switchInput: function(){
+            this.isInputWord = !this.isInputWord
+            if(this.isInputWord){
+                this.$refs.msgInput.focus()
+            }
         }
     },
     created: async function(){
@@ -130,10 +142,13 @@ export default {
 
 <style scoped>
 .msgcontent{
-    height: calc(100% - 58px - 14rem);
+    height: calc(100% - 58px);
     width: 100%;
     padding-top:10px;
     overflow-y:scroll;
+}
+.msgcontentInputEmoji{
+     height: calc(100% - 58px - 14rem);
 }
 .control{
     height: 48px;
@@ -144,21 +159,25 @@ export default {
     justify-content: space-around;
 }
 .control input{
-    width: calc(100% - 80px);
+    width: calc(100% - 110px);
     height: 30px;
     border: 1px gray solid;
     border-radius: 8px;
     margin-top: 8px;
 }
+.control span{
+    font-size: 30px;
+    line-height: 48px;
+}
 .control button{
-    width: 60px;
-    height: 34px;
+    width: 50px;
+    height: 30px;
     background-color: blue;
     color: white;
     font-size: 16px;
     border: none;
     border-radius: 4px;
-    margin-top: 8px;
+    margin-top: 9px;
 }
 .friendmsg{
     display:flex;
@@ -205,3 +224,5 @@ export default {
 
 </style>
 
+<style src="../static/icon/iconfont.css" scoped>
+</style>
