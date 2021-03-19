@@ -1,7 +1,7 @@
 //var url= " ws://www.onlinemusic.top:9090/message/ws"
 import config from "./config.js"
 
-var url = config.host + "/message/ws"
+var url = config.ws + "/message/ws"
 
 const socket = {
     //判断是否有连接

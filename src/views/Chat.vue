@@ -1,16 +1,20 @@
 <template>
     <div>
         <div :class="isInputWord ? 'msgcontent' : 'msgcontent msgcontentInputEmoji'" ref="content"  @scroll="onScroll">
-            <div v-for="item in msgs" :key="item.Id" :class="item.Senderid == id ? 'friendmsg' : 'friendmsg transform'">
+            <div v-for="item in msgs" :key="item.Id" :class="item.Senderid == id ? 'friendmsg ' : 'friendmsg transform '">
                 <!-- <img :src="img"/> -->
                 <img :src="userInfo.Headimg" />
-                <div><p>{{item.Content}}</p></div>
+                <div :class="item.Type == 1 ? '': ' whiteBackgroundColor'">
+                    <p v-if="item.Type == 1 ">{{item.Content}}</p>
+                    <img v-else :src="getImgUrl(item.Content)"/>
+                </div>
             </div>
         </div>
         <div class="control">
-            <upload-file></upload-file>
+           
             <input @keydown="send" type="text" v-model="msg" @focus="wordInput" ref="msgInput" />
             <span :class="isInputWord ? 'iconfont icon-biaoqing' : 'iconfont icon-jianpanTalk-keyboard'" @click="switchInput"></span>
+            <upload-file height="30px" width="30px" @fileUpload="fileUpload"></upload-file>
             <button @click="send">发送</button>
         </div>
         <div v-if="!isInputWord" class="emoji">
@@ -30,6 +34,7 @@ import request from '../utility/request.js'
 import emoji from '../utility/emoji.js'
 import common from '../utility/common.js'
 import UploadFile from '../components/UploadFile.vue'
+import config from '../utility/config.js'
 
 export default {
     props:{
@@ -114,6 +119,14 @@ export default {
             if(this.isInputWord){
                 this.$refs.msgInput.focus()
             }
+        },
+        //发图片
+        fileUpload: function(url){
+            socket.sendMessage(this._props.id, url, 2)
+        },
+        //获取转换图片链接
+        getImgUrl: function(content){
+            return config.host + "/static/image/" + content
         }
     },
     created: async function(){
@@ -169,6 +182,9 @@ export default {
     font-size: 30px;
     line-height: 48px;
 }
+.control div{
+    margin-top: 9px;
+}
 .control button{
     width: 50px;
     height: 30px;
@@ -200,6 +216,16 @@ export default {
     padding: 0 10px;
     color: white;
 }
+.friendmsg .whiteBackgroundColor{
+    background-color: white;
+}
+.friendmsg .whiteBackgroundColor img{
+    width: auto;
+    max-width: 60%;
+    height: auto;
+    margin-left: auto;
+    border-radius: 5px;
+}
 .emoji{
     height: 14rem;
     overflow: hidden;
@@ -225,4 +251,5 @@ export default {
 </style>
 
 <style src="../static/icon/iconfont.css" scoped>
+
 </style>

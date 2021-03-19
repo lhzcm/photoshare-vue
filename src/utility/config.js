@@ -1,6 +1,7 @@
-const host =  "http://127.0.0.1:9090"
+const host =  "127.0.0.1:9090"
 const config = {
-    host,
+    host : "http://" + host,
+    ws: "ws://" + host,
     imageBaseUrl: host + "/static/image/",
 }
 

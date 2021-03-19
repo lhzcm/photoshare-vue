@@ -27,14 +27,14 @@ export default {
             if(!this.$refs.imgfile.value || this.$refs.imgfile.value == ""){
                 return
             }
-
             var form = new FormData()
             form.append("img", this.$refs.imgfile.files[0])
             // axios.post(config.host + "/messages/uploadimg", form, function(res){
             //     console.log(res)
             // })
+            var that = this
             request.post("/messages/uploadimg", form, function(res){
-                console.log(res)
+                that.$emit("fileUpload", res)
             })
         }
     },
