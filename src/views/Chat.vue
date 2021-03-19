@@ -9,6 +9,7 @@
         </div>
         <div class="control">
             <input @keydown="send" type="text" v-model="msg"/>
+            <upload-file></upload-file>
             <button @click="send">发送</button>
         </div>
         <div class="emoji">
@@ -27,12 +28,16 @@ import user from '../utility/user.js'
 import request from '../utility/request.js'
 import emoji from '../utility/emoji.js'
 import common from '../utility/common.js'
+import UploadFile from '../components/UploadFile.vue'
 
 export default {
     props:{
         id: Number,
         img: String,
         name: String,
+    },
+    components:{
+        UploadFile
     },
     data: function(){
         return{

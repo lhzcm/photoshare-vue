@@ -1,5 +1,7 @@
 //var url= " ws://www.onlinemusic.top:9090/message/ws"
-var url = "ws://127.0.0.1:9090/message/ws"
+import config from "./config.js"
+
+var url = config.host + "/message/ws"
 
 const socket = {
     //判断是否有连接
@@ -62,7 +64,7 @@ const socket = {
         }
     },
     //发送消息
-    sendMessage: function(revId, msg){
+    sendMessage: function(revId, msg, type = 1){
         if (!this.connection) {
             alert("发送失败，服务器连接失败")
             return false;
@@ -76,7 +78,7 @@ const socket = {
             Data : {
                 Receiverid : revId,
                 Content : msg,
-                Type : 1
+                Type : type
             }
         }
         this.connection.send(JSON.stringify(message))
