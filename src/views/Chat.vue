@@ -172,7 +172,7 @@ export default {
     justify-content: space-around;
 }
 .control input{
-    width: calc(100% - 110px);
+    width: calc(100% - 130px);
     height: 30px;
     border: 1px gray solid;
     border-radius: 8px;
@@ -200,7 +200,7 @@ export default {
     flex-direction: row;
     margin-bottom: 10px;
 }
-.friendmsg img{
+.friendmsg>img{
     width: 48px;
     height: 48px;
     margin-left: 10px;
@@ -220,11 +220,7 @@ export default {
     background-color: white;
 }
 .friendmsg .whiteBackgroundColor img{
-    width: auto;
-    max-width: 60%;
-    height: auto;
-    margin-left: auto;
-    border-radius: 5px;
+    width: 100%;
 }
 .emoji{
     height: 14rem;
@@ -240,7 +236,7 @@ export default {
 .transform {
     transform: scaleX(-1);
 }
-.transform img{
+.transform > img{
     transform: scaleX(-1);
 }
 .transform div{

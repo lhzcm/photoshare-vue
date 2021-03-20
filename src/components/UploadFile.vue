@@ -33,8 +33,13 @@ export default {
             //     console.log(res)
             // })
             var that = this
+
+            that.bus.$emit("loading",true)
             request.post("/messages/uploadimg", form, function(res){
                 that.$emit("fileUpload", res)
+                that.bus.$emit("loading", false)
+            },function(){
+                that.bus.$emit("loading", false)
             })
         }
     },

@@ -46,7 +46,7 @@ const request = {
         }
         return result.data.Data
     },
-    post: function(url, param, callback){
+    post: function(url, param, callback, failCallback = null){
         axios.post(config.host + url, param).then(function(res){
             if(res.data.Code == -11){
                 //跳转到登录
@@ -55,12 +55,16 @@ const request = {
             }
             if(res.data.Code == -1){
                 alert(res.data.Msg)
+                if(failCallback)
+                    failCallback(res)
                 return
             }
             if(callback){
                 callback(res.data.Data)
             }
         }).catch(function(ex){
+            if(failCallback)
+                    failCallback(ex)
             console.log(ex)
         })
     }

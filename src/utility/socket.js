@@ -27,8 +27,9 @@ const socket = {
         if (window["WebSocket"]) {
             this.connection = new WebSocket(url);
             this.connection.onclose = function (evt) {
-                alert("与服务器连接中断")
-                setTimeout(function(){socket.openConnection()}, 5000)
+                //alert("与服务器连接中断")
+                console.log("与服务器连接中断")
+                setTimeout(function(){socket.openConnection()}, 2000)
                 console.log(evt)
             }
 
