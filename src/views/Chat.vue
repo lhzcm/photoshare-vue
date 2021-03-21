@@ -45,11 +45,17 @@ export default {
     components:{
         UploadFile
     },
+    watch:{
+        "friendInfo":function(newValue) {
+            this.bus.$emit("title", newValue.Name)
+        }
+    },
     data: function(){
         return{
             msg : "",
             msgs:[],
             curindex: 0,
+            friendInfo: {},
             
             isScroll: true,         //是否需要滚动到最底部
 
@@ -65,12 +71,10 @@ export default {
         }
     },
     beforeUpdate:function(){
-        console.log(this.$refs.content.scrollHeight)
         this.lastScrollTop = this.$refs.content.scrollTop
         this.lastScrollHeight = this.$refs.content.scrollHeight
     },
     updated:function(){
-        console.log(this.$refs.content.scrollHeight)
         if(this.isScroll){
             this.$refs.content.scrollTop = this.$refs.content.scrollHeight
             this.isScroll = false
@@ -145,7 +149,19 @@ export default {
         this.getMsgList()
         //获取用户信息
         this.userInfo = await user.getUserInfo()
-        //console.log(this.userInfo)
+
+        //获取好友信息
+        var friend = user.getFriendById(that._props.id)
+        if(friend){
+            that.friendInfo = friend
+            return
+        }
+        request.get('/friend', "", function(data){
+            friend = data.find((item)=>item == that._props.id)
+            if(friend){
+                that.friendInfo = friend
+          }
+        })
     },
     mounted:function(){
         this.$refs.content.scrollTop = this.$refs.content.scrollHeight
@@ -207,7 +223,7 @@ export default {
     border-radius: 5px;
 }
 .friendmsg div{
-    font-size: 20px;
+    font-size: 16px;
     background-color: blue;
     margin-left: 10px;
     border-radius: 10px;

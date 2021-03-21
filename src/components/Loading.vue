@@ -60,9 +60,6 @@ export default {
   height: 6rem;
   /* animation: myloading 5s cubic-bezier(1,1,1,1) 0s infinite; */
 }
-.noLoad {
-  display: none;
-}
 
 /* @keyframes myloading {
     0% {transform: rotate(0deg);}   

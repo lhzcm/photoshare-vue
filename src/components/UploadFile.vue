@@ -1,5 +1,5 @@
 <template>
-    <div class="fileupload" ref="filepanel" @click="selectFile"><input @change="upload" type="file" ref="imgfile"/></div>
+    <div class="fileupload" ref="filepanel" @click="selectFile"><input @change="upload" type="file" accept=".jpg, .jpeg, .png, .gif" ref="imgfile"/></div>
 </template>
 
 
@@ -38,8 +38,10 @@ export default {
             request.post("/messages/uploadimg", form, function(res){
                 that.$emit("fileUpload", res)
                 that.bus.$emit("loading", false)
+                that.$refs.imgfile.value=""
             },function(){
                 that.bus.$emit("loading", false)
+                that.$refs.imgfile.value=""
             })
         }
     },

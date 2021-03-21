@@ -17,6 +17,7 @@
 <script>
 import request from "../utility/request.js"
 import socket from "../utility/socket.js"
+import user from "../utility/user.js"
 
 export default {
   data: function () {
@@ -30,7 +31,6 @@ export default {
       var that = this
       //获取好友列表
       request.get('/friend', "", function(data){
-          console.log(data)
           data.forEach(function(item){
               that.friends.push({
                   Id: item.Id, 
@@ -40,7 +40,8 @@ export default {
                   })
           })
           that.friends.sort((a,b)=> b.Notreadnums - a.Notreadnums)
-          console.log(that.friends)
+          //保存好友列表
+          user.friends = that.friends
       })
       //监听消息接收
       socket.onReceiveMessageAfter = function(msg){

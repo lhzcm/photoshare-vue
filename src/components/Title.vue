@@ -6,7 +6,6 @@
 </template>
 
 <script>
-
 export default {
   name: "titlecomponents",
   props: {
@@ -24,7 +23,12 @@ export default {
               this.titlename = element.name
           }
       });
-})
+    })
+    //监听是否改变title的值
+    var that = this
+    this.bus.$on("title", function(name){
+      that.titlename = name
+    })
   },
   methods: {
     gotoBack: function () {
