@@ -12,6 +12,18 @@ const user = {
         console.log(this.userInfo)
         return this.userInfo
     },
+    getUserInfoCallBack: function(func){
+        if(!func) return
+        if(this.userInfo){
+            func(this.userInfo)
+            return
+        }
+        var that = this
+        request.get("/user/info", "", function(res){
+            that.userInfo = res
+            func(res)
+        })
+    },
     getFriendById: function(id){
         if(!this.friends)
             return null
