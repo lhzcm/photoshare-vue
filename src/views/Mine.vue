@@ -33,8 +33,6 @@ export default {
 
 <style scoped>
 .pannel{
-    height: 100%;
-    width: 100%;
     background-color: whitesmoke;
     overflow-y: scroll;
 }

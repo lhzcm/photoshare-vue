@@ -44,6 +44,11 @@ const routes = [
     path: '/register',
     name: '账号注册',
     component:()=> import('../views/Register.vue')
+  },
+  {
+    path:'/friendadd',
+    name:'好友添加',
+    component:()=> import('../views/FriendAdd.vue')
   }
 ]
 
