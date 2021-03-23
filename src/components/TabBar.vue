@@ -45,7 +45,7 @@ export default {
                 icon: "iconfont icon-wo",
                 name: "我的",
                 path: "/mine",
-                paths: ["/mine"],
+                paths: ["/mine","/invite"],
                 active: false
             }],
             isShow: true

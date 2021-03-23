@@ -1,14 +1,17 @@
 <template>
     <div class="pannel">
         <div class="list">
-            <button @click="switchSearch">查找好友</button>
             <div v-for="item in invitedList" :key="item.Id" class="invitedInfo">
                 <div>
                     <img :src="item.Headimg" />
                     <div>{{item.Name}}</div>
                 </div>
-                <button @click="add(item.Id)">添加</button>
+                <div>
+                    <button @click="accept(item.Id, 1)">接受</button>
+                    <button @click="accept(item.Id, -1)">拒绝</button>
+                </div>
             </div>
+            <img @click="switchSearch" src="../static/img/search.png"/>
         </div>
         <div v-show="isSearch" @click="switchSearch" class="mark">
             <div @click.stop><input type="text" ref="search" v-model="id" @keydown="onSearch" placeholder="请输入用户ID或手机号码" /></div>
@@ -48,7 +51,8 @@ export default {
         switchSearch: function(){
             this.isSearch = !this.isSearch;
             if(this.isSearch){
-                 this.$refs.search.focus()
+                var that = this
+                setTimeout(function(){that.$refs.search.focus()},1000)
             }
         },
         onSearch: function(e){
@@ -62,10 +66,22 @@ export default {
         },
         add: function(id){
             request.post("/invite",{
-                "invitedid" : id,
-                "message" : "邀请你为好友"
+                "Invitedid" : id,
+                "Message" : "邀请你为好友"
             },function(res){
                 alert(res)
+            })
+        },
+        accept: function(id, status){
+            var that = this
+            request.patch("/invite",{
+                "Id": id,
+                "Status": status
+            },function(_, msg){
+                alert(msg)
+                 request.get("/invite/"+that.page+"/"+that.pagesize+"/"+that.status+"","",function(res){
+                    that.invitedList = res.list
+                })
             })
         }
     }
@@ -78,10 +94,13 @@ export default {
     position: relative;
     overflow: hidden;
 }
-.list button{
+.list > img{
     position: absolute;
     right: 0px;
     z-index: 8;
+    top: 50%;
+    height: 40px;
+    width: 40px;
 }
 
 .invitedInfo{
@@ -90,9 +109,8 @@ export default {
     justify-content: space-between;
     height: 60px;
     background-color: #00000075;
-    margin-bottom: 1px;
     font-size: 16px;
-    margin-top: 10px;
+    margin-top: 2px;
 }
 .invitedInfo > div {
     display:flex;
@@ -113,7 +131,7 @@ export default {
     line-height: 60px;
 }
 
-.invitedInfo button{
+.invitedInfo > div > button{
     height: 26px;
     border-radius: 26px;
     width: 50px;
@@ -122,6 +140,11 @@ export default {
     border: none;
     margin-top: 17px;
     outline: none;
+    margin-right: 5px;
+}
+
+.invitedInfo > div > button:nth-child(2){
+    background-color: rgb(184, 6, 6);
 }
 
 

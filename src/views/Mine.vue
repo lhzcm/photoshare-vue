@@ -7,7 +7,7 @@
                 <div>ID:{{userInfo.Id}}</div>
             </div>
         </div>
-        <div class="addfriend">
+        <div class="addfriend" @click="addFriend">
             <span class="iconfont icon-haoyoutuijie"></span>
             <div>好友添加</div>
         </div>
@@ -27,6 +27,11 @@ export default {
         user.getUserInfoCallBack(function(userinfo){
             that.userInfo = userinfo
         })
+    },
+    methods:{
+        addFriend: function(){
+            this.$router.push("/invite")
+        }
     }
 }
 </script>

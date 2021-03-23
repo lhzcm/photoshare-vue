@@ -67,7 +67,29 @@ const request = {
                     failCallback(ex)
             console.log(ex)
         })
-    }
+    },
+    patch: function(url, param, callback, failCallback = null){
+        axios.patch(config.host + url, param).then(function(res){
+            if(res.data.Code == -11){
+                //跳转到登录
+               router.push("/login")
+                return
+            }
+            if(res.data.Code == -1){
+                alert(res.data.Msg)
+                if(failCallback)
+                    failCallback(res)
+                return
+            }
+            if(callback){
+                callback(res.data.Data, res.data.Msg)
+            }
+        }).catch(function(ex){
+            if(failCallback)
+                    failCallback(ex)
+            console.log(ex)
+        })
+    },
 }
 
 

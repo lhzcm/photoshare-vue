@@ -46,9 +46,9 @@ const routes = [
     component:()=> import('../views/Register.vue')
   },
   {
-    path:'/friendadd',
+    path:'/invite',
     name:'好友添加',
-    component:()=> import('../views/FriendAdd.vue')
+    component:()=> import('../views/Invite.vue')
   }
 ]
 
