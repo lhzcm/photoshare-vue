@@ -46,11 +46,11 @@ const socket = {
                     }
                    try{
                     var msgObj = JSON.parse(messages[i])
-                    if(msgObj.Code == 1){
+                    if(msgObj.Code == 1 || msgObj.Code == 4){
                         console.log(messages[i], msgObj)
                         that.messagesCache.push(msgObj.Data)
                         if(that.onReceiveMessageAfter){
-                            that.onReceiveMessageAfter(msgObj.Data)
+                            that.onReceiveMessageAfter(msgObj.Data, msgObj.Code)
                         }
                     }}catch(err){
                        alert("获取消息出错")

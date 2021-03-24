@@ -44,15 +44,17 @@ export default {
           user.friends = that.friends
       })
       //监听消息接收
-      socket.onReceiveMessageAfter = function(msg){
-        for( var i = 0; i < that.friends.length; i++){
-          if(that.friends[i].Id == msg.Senderid){
-            that.friends[i].Notreadnums++;
-            // var temp = that.friends[0]
-            // that.friends[0] =  that.friends[i]
-            // that.friends[i] = temp
+      socket.onReceiveMessageAfter = function(msg, code){
+        if(code == 1){
+          for( var i = 0; i < that.friends.length; i++){
+            if(that.friends[i].Id == msg.Senderid){
+              that.friends[i].Notreadnums++;
+              // var temp = that.friends[0]
+              // that.friends[0] =  that.friends[i]
+              // that.friends[i] = temp
+            }
+            that.friends.sort((a,b)=> b.Notreadnums - a.Notreadnums)
           }
-          that.friends.sort((a,b)=> b.Notreadnums - a.Notreadnums)
         }
       }
   }
