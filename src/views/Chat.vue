@@ -138,11 +138,15 @@ export default {
         var that = this
         //监听消息接收
         socket.onReceiveMessageAfter = function(data){
-             that.msgs.push(data)
-             that.isScroll = true 
-             if(data.Senderid == that._props.id){
+            //判断是否是与当前用户的聊天信息
+            if(data.Senderid != that._props.id && data.Receiverid != that._props.id){
+                return
+            }
+            that.msgs.push(data)
+            that.isScroll = true 
+            if(data.Senderid == that._props.id){
                 socket.clearNotreadnums(data.Senderid)
-             }
+            }
         }
         //this.reloadMsg(socket.messagesCache)
         //获取消息列表
@@ -156,6 +160,8 @@ export default {
             that.friendInfo = friend
             return
         }
+
+        //获取当前聊天好友的信息
         request.get('/friend', "", function(data){
             friend = data.find((item)=>item == that._props.id)
             if(friend){
