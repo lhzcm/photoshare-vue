@@ -1,5 +1,7 @@
 <template>
-    <div class="fileupload" ref="filepanel" @click="selectFile"><input @change="upload" type="file" accept=".jpg, .jpeg, .png, .gif" ref="imgfile"/></div>
+    <div class="fileupload" ref="filepanel" @click="selectFile">
+        <input @change="upload" type="file" accept=".jpg, .jpeg, .png, .gif" ref="imgfile" width="60px"/>
+    </div>
 </template>
 
 
@@ -10,13 +12,18 @@ import request from "../utility/request.js"
 
 export default {
     props: {
+        url: String,
         height: String,
         width: String,
     },
     data: function(){
         return {
-
+            uploadurl: "",
         }
+    },
+    created:function(){
+        console.log(this._props)
+        this.uploadUrl = this._props.url ? this._props.url : "/messages/uploadimg"
     },
     methods: {
         selectFile: function(){
@@ -35,7 +42,7 @@ export default {
             var that = this
 
             that.bus.$emit("loading",true)
-            request.post("/messages/uploadimg", form, function(res){
+            request.post(this.uploadUrl, form, function(res){
                 that.$emit("fileUpload", res)
                 that.bus.$emit("loading", false)
                 that.$refs.imgfile.value=""
