@@ -24,7 +24,7 @@
                 <input v-model="phone" placeholder="请输入手机号码" type="text"/>
                 <button @click="getCode">验证</button>
             </div>
-            <div v-if="code > 0" class="msg">请用该手机号发送<span>{{"xin#"+code}}</span>到<span>13556000271</span></div>
+            <div v-if="code > 0" class="msg"><a :href="'sms:13556000271?body=xin#' + code">请用该手机号发送<span>{{"xin#"+code}}</span>到<span>13556000271</span></a></div>
         </div>
     </div>
 </template>

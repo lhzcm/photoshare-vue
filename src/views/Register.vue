@@ -25,7 +25,7 @@
                 <button @click="getCode">验证</button>
                 <button @click="register" :class="canRegister?'active':''">注册</button>
             </div>
-            <div v-if="code > 0 && !canRegister" class="msg">请用该手机号发送<span>{{"xin#"+code}}</span>到<span>13556000271</span></div>
+            <div v-if="code > 0 && !canRegister" class="msg"><a :href="'sms:13556000271?body=xin#' + code">请用该手机号发送<span>{{"xin#"+code}}</span>到<span>13556000271</span></a></div>
         </div>
     </div>
 </template>
