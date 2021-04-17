@@ -51,7 +51,7 @@ body {
     margin: 0px;
 }
 .main {
-  background-color: antiquewhite;
+  /* background-color: antiquewhite; */
   width:100%;
   height: 100%;
   overflow-y: hidden;
@@ -73,6 +73,7 @@ body {
   height: 100%;
   overflow-y: scroll;
   position: absolute;
+  box-shadow: 0 0 15px #ccc;
 }
 .view{
   height: calc(100% - 88px);
